@@ -4,6 +4,7 @@ import authService from './appwrite/auth'
 import { login, logout } from './store/authSlice'
 import {Header, Footer} from "./components"
 import { Outlet } from 'react-router-dom'
+import { getPosts } from './store/postSlice'
 
 const App = () => {
 
@@ -15,13 +16,21 @@ const App = () => {
     authService.getCurrentUser()
     .then((userData) => {
        if(userData){
-          dispatch(login(userData))
+          dispatch(login({userData}))
        } else {
         dispatch(logout())
        }
     })
     .catch((error) => console.log(error.message))
     .finally(() => setLoading(false))
+  },[])
+
+  useEffect(() => {
+    try {
+      dispatch(getPosts())
+    } catch (error) {
+      console.log(error);
+    }
   },[])
 
   return (

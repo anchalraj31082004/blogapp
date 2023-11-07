@@ -16,18 +16,19 @@ export class AuthService {
     try {
       const userAccount = await this.account.create(
         ID.unique(),
-        name,
         email,
-        password
-      );
+        password,
+        name,
+        );
 
       if (userAccount) {
         //call another function
-        return this.login({ email, password });
+        return await this.login({ email, password });
       } else {
         return userAccount;
       }
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
